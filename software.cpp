@@ -18,7 +18,7 @@ void initializeRooms();
 struct Room {
     char type[10];
     char village[3];
-    char block[3];
+    char block[4];
     int floor;
     int unit;
     int room;
@@ -112,7 +112,7 @@ void selectFloor() {
 
 void selectBlock() {
     cout << "Enter block (e.g., V1a, V1b, etc.): ";
-    char block[3];
+    char block[4];
     cin >> block;
     cout << "Block selected: " << block << endl;
 }
@@ -139,7 +139,6 @@ void changeRoom() {
 
 void initializeRooms() {
     // Initialize rooms based on given structure
-    // Adding some sample rooms for demonstration
     Room room1 = {"Shared", "V1", "V1a", 1, 1, 1, false, true, 900.0};
     Room room2 = {"Single", "V4", "V4a", 1, 1, 1, true, true, 1100.0};
     Room room3 = {"Shared", "V5", "V5a", 1, 1, 1, true, true, 1100.0};
