@@ -1,6 +1,6 @@
 #include <cstring>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -209,15 +209,10 @@ void saveRoomDetailsToFile(const char *filename) {
   if (outFile.is_open()) {
     outFile << roomCount << endl;
     for (int i = 0; i < roomCount; ++i) {
-      outFile << rooms[i].type << " "
-              << rooms[i].village << " "
-              << rooms[i].block << " "
-              << rooms[i].floor << " "
-              << rooms[i].unit << " "
-              << rooms[i].room << " "
-              << rooms[i].airCond << " "
-              << rooms[i].cleaningService << " "
-              << rooms[i].price << endl;
+      outFile << rooms[i].type << " " << rooms[i].village << " "
+              << rooms[i].block << " " << rooms[i].floor << " " << rooms[i].unit
+              << " " << rooms[i].room << " " << rooms[i].airCond << " "
+              << rooms[i].cleaningService << " " << rooms[i].price << endl;
     }
     outFile.close();
     cout << "Room details saved to " << filename << endl;
@@ -231,15 +226,9 @@ void loadRoomDetailsFromFile(const char *filename) {
   if (inFile.is_open()) {
     inFile >> roomCount;
     for (int i = 0; i < roomCount; ++i) {
-      inFile >> rooms[i].type
-             >> rooms[i].village
-             >> rooms[i].block
-             >> rooms[i].floor
-             >> rooms[i].unit
-             >> rooms[i].room
-             >> rooms[i].airCond
-             >> rooms[i].cleaningService
-             >> rooms[i].price;
+      inFile >> rooms[i].type >> rooms[i].village >> rooms[i].block >>
+          rooms[i].floor >> rooms[i].unit >> rooms[i].room >>
+          rooms[i].airCond >> rooms[i].cleaningService >> rooms[i].price;
     }
     inFile.close();
     cout << "Room details loaded from " << filename << endl;
