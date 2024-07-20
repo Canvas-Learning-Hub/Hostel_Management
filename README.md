@@ -64,10 +64,10 @@ The objective of this project is to develop a comprehensive Hostel Management Sy
 
 ## Team Members
 
-- [Member 1 Name (ID)]
-- [Member 2 Name (ID)]
-- [Member 3 Name (ID)]
-- [Member 4 Name (ID)]
+- [Yap Clement (22008723)]
+- [Zeng Kai Ming (24001855)]
+- [Aiman Nasrullah (22009315)]
+- [Adib Thaqif (22011594)]
 
 ## Project Scope
 
