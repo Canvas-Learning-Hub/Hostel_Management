@@ -18,7 +18,7 @@ This project is a Hostel Management System developed using C++. It is designed t
 ## Files
 
 - `main.cpp`: Contains the source code for the project.
-- `rooms.txt`: Stores room details. (Created only when you chose to save the room file)
+- `rooms.txt`: Stores room details. (Created only when you chose to save the room details)
 - `README.md`: This file.
 - `Proposal.pdf`: Detailed project proposal.
 
