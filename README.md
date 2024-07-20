@@ -46,10 +46,6 @@ This project is a Hostel Management System developed using C++. It is designed t
 
 Contributions are welcome. Please fork the repository and create a pull request.
 
-## Authors
-
-- [Your Team Name]
-
 ---
 
 ### Proposal
