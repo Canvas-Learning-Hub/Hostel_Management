@@ -13,6 +13,7 @@ void promptRoomDetails(char *type, char *village, char *block, int &floor,
                        int &unit, int &room);
 void saveRoomDetailsToFile(const char *filename);
 void loadRoomDetailsFromFile(const char *filename);
+void initializeRooms(); // Add this function prototype
 bool isValidVillage(const char *village);
 bool isValidBlock(const char *village, const char *block);
 bool isAirConditioned(const char *village, const char *block, int floor);
@@ -42,6 +43,7 @@ int roomCount = 0;
 double totalBill = 0;
 
 int main() {
+  initializeRooms(); // Initialize rooms to ensure there are rooms to save
   bool exit = false;
   while (!exit) {
     showInitialMenu();
@@ -138,21 +140,16 @@ bool isValidBlock(const char *village, const char *block) {
 }
 
 bool isAirConditioned(const char *village, const char *block, int floor) {
-  return (strcmp(village, "V4") == 0 && strcmp(block, "V4c") == 0 && floor == 1) ||
+  return (strcmp(village, "V4") == 0 && strcmp(block, "V4c") == 0 &&
+          floor == 1) ||
          (strcmp(village, "V5") == 0 && floor == 1);
 }
 
-bool isValidFloor(int floor) {
-  return floor >= 0 && floor <= 3;
-}
+bool isValidFloor(int floor) { return floor >= 0 && floor <= 3; }
 
-bool isValidUnit(int unit) {
-  return unit >= 1 && unit <= 4;
-}
+bool isValidUnit(int unit) { return unit >= 1 && unit <= 4; }
 
-bool isValidRoom(int room) {
-  return room >= 1 && room <= 6;
-}
+bool isValidRoom(int room) { return room >= 1 && room <= 6; }
 
 void promptRoomDetails(char *type, char *village, char *block, int &floor,
                        int &unit, int &room) {
@@ -208,7 +205,8 @@ void changeRoom() {
   int currentRoom;
 
   cout << "Enter current room details:\n";
-  promptRoomDetails(currentType, currentVillage, currentBlock, currentFloor, currentUnit, currentRoom);
+  promptRoomDetails(currentType, currentVillage, currentBlock, currentFloor,
+                    currentUnit, currentRoom);
 
   char newType[10];
   char newVillage[3];
@@ -221,10 +219,12 @@ void changeRoom() {
   promptRoomDetails(newType, newVillage, newBlock, newFloor, newUnit, newRoom);
 
   cout << "Room change logic here\n";
-  cout << "Changed from room: " << currentType << " in " << currentVillage << " " << currentBlock
-       << " on floor " << currentFloor << ", unit " << currentUnit << ", room " << currentRoom << endl;
-  cout << "Changed to room: " << newType << " in " << newVillage << " " << newBlock
-       << " on floor " << newFloor << ", unit " << newUnit << ", room " << newRoom << endl;
+  cout << "Changed from room: " << currentType << " in " << currentVillage
+       << " " << currentBlock << " on floor " << currentFloor << ", unit "
+       << currentUnit << ", room " << currentRoom << endl;
+  cout << "Changed to room: " << newType << " in " << newVillage << " "
+       << newBlock << " on floor " << newFloor << ", unit " << newUnit
+       << ", room " << newRoom << endl;
 }
 
 void selectCleaningService() {
@@ -307,5 +307,68 @@ void loadRoomDetailsFromFile(const char *filename) {
     cout << "Room details loaded from " << filename << endl;
   } else {
     cout << "Unable to open file for reading." << endl;
+  }
+}
+
+// Function to initialize all rooms
+void initializeRooms() {
+  const char *villages[] = {"V1", "V2", "V3", "V4", "V5", "V6"};
+  const char *blocksV1[] = {"V1a", "V1b", "V1c", "V1d"};
+  const char *blocksV2[] = {"V2a", "V2b", "V2c", "V2d"};
+  const char *blocksV3[] = {"V3a", "V3b", "V3c", "V3d"};
+  const char *blocksV4[] = {"V4a", "V4b", "V4c", "V4d", "V4e"};
+  const char *blocksV5[] = {"V5a", "V5b", "V5c", "V5d", "V5e", "V5f",
+                            "V5g", "V5h", "V5i", "V5j", "V5k"};
+  const char *blocksV6[] = {"V6a", "V6b", "V6c", "V6d"};
+
+  const int numRoomsPerUnit = 6;
+  const double priceSingle = 1100.0;
+  const double priceShared = 998.0;
+  const double priceAirCond = 1350.0;
+
+  roomCount = 0;
+
+  for (int v = 0; v < 6; ++v) {
+    const char *village = villages[v];
+    const char **blocks = (v == 0)   ? blocksV1
+                          : (v == 1) ? blocksV2
+                          : (v == 2) ? blocksV3
+                          : (v == 3) ? blocksV4
+                          : (v == 4) ? blocksV5
+                                     : blocksV6;
+    int numBlocks = (v == 0 || v == 1 || v == 2 || v == 5) ? 4
+                    : (v == 3)                             ? 5
+                                                           : 11;
+    int numFloors = (v == 5) ? 2 : 3;
+
+    for (int b = 0; b < numBlocks; ++b) {
+      const char *block = blocks[b];
+      for (int f = 0; f <= numFloors; ++f) {
+        for (int u = 1; u <= 4; ++u) {
+          for (int r = 1; r <= numRoomsPerUnit; ++r) {
+            if (roomCount >= MAX_ROOMS) {
+              cout << "Exceeded max room count. Current count: " << roomCount
+                   << endl;
+              return;
+            }
+            Room room;
+            strcpy(room.type, (r % 2 == 0) ? "Single" : "Shared");
+            strcpy(room.village, village);
+            strcpy(room.block, block);
+            room.floor = f;
+            room.unit = u;
+            room.room = r;
+            room.airCond = isAirConditioned(village, block, f);
+            room.cleaningService = true;
+            room.price = room.airCond ? priceAirCond
+                                      : ((strcmp(room.type, "Single") == 0)
+                                             ? priceSingle
+                                             : priceShared);
+
+            rooms[roomCount++] = room;
+          }
+        }
+      }
+    }
   }
 }
